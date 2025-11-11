@@ -1,0 +1,38 @@
+version: '3'
+
+volumes:
+  static:
+
+services:
+  redis:
+    image: redis
+    container_name: redis
+    volumes:
+      - ./redisData:/data
+      - ./compose/production/redis/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./redisLogs:/logs
+    command:
+      redis-server /usr/local/etc/redis/redis.conf
+    ports:
+      - 6379:6379
+
+  chenxuan:
+    build:
+      context: .
+      dockerfile: compose/production/django/Dockerfile
+    image: chenxuan
+    container_name: chenxuan
+    working_dir: /app
+    volumes:
+      - ./static:/app/static
+      - ./templates:/app/templates
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "8000:8000"
+    environment:
+      - SET_CONTAINER_TIMEZONE=true
+      - CONTAINER_TIMEZONE=Asia/Shanghai
+    links:
+      - redis
+    command: /start.sh
+

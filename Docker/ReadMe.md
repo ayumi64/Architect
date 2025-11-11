@@ -14,3 +14,21 @@
 
 ### Test
  http://localhost:8901/setup.php
+
+
+## Linux
+
+docker pull ubuntu
+
+使用镜像nginx:latest以交互模式启动一个容器,在容器内执行/bin/bash命令。
+
+```Bash
+docker run -it ubuntu:latest /bin/bash
+```
+
+1. 安装python
+
+apt-get update
+apt-get install python3.11.1
+
+ln -s /usr/bin/python3.11 /usr/bin/python

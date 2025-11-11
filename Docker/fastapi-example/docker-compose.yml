@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  fastapi-app:
+    image: tiangolo/uvicorn-gunicorn-fastapi:python3.10-2025-11-10
+    container_name: fastapi-example
+    ports:
+      - "8000:80"
+    volumes:
+      - ./:/app
+    environment:
+      - MODULE_NAME=main
+      - VARIABLE_NAME=app
+      - APP_MODULE=main:app
+      - WORKERS_PER_CORE=1
+      - HOST=0.0.0.0
+      - PORT=80
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
